@@ -2,8 +2,8 @@ let gameData = null;
 let filteredPlayers = [];
 
 // API URL with CORS proxy
-const API_URL = 'https://api.allorigins.win/get?url=' +
-    encodeURIComponent('http://loadbalancer-prod-1ac6c83-453346156.us-east-1.elb.amazonaws.com/leaderboards/scores/');
+const API_URL = 'https://cors-anywhere.herokuapp.com/http://loadbalancer-prod-1ac6c83-453346156.us-east-1.elb.amazonaws.com/leaderboards/scores/';
+
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
     fetchData();
@@ -55,8 +55,8 @@ async function fetchData() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
-        gameData = JSON.parse(data.contents); // For allorigins        console.log('Fetched data:', gameData);
+        gameData = await response.json();
+        console.log('Fetched data:', gameData);
 
         if (gameData && gameData.leaderboards && Array.isArray(gameData.leaderboards)) {
             populateStanceFilter();
