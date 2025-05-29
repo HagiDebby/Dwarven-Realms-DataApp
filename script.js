@@ -1,8 +1,8 @@
 let gameData = null;
 let filteredPlayers = [];
 
-// API URL with CORS proxy
-const API_URL = 'https://cors-anywhere.herokuapp.com/http://loadbalancer-prod-1ac6c83-453346156.us-east-1.elb.amazonaws.com/leaderboards/scores/';
+// API URL
+const API_URL = 'http://loadbalancer-prod-1ac6c83-453346156.us-east-1.elb.amazonaws.com/leaderboards/scores/';
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
