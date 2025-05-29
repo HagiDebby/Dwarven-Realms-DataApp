@@ -1,8 +1,8 @@
 let gameData = null;
 let filteredPlayers = [];
 
-// API URL
-const API_URL = 'http://loadbalancer-prod-1ac6c83-453346156.us-east-1.elb.amazonaws.com/leaderboards/scores/';
+// API URL with CORS proxy
+const API_URL = 'https://cors-anywhere.herokuapp.com/http://loadbalancer-prod-1ac6c83-453346156.us-east-1.elb.amazonaws.com/leaderboards/scores/';
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
@@ -45,6 +45,9 @@ function resetFilters() {
     filterPlayers();
 }
 
+// API URL - now points to your Netlify function
+const API_URL = '/.netlify/functions/api-proxy';
+
 async function fetchData() {
     try {
         document.getElementById('players-content').innerHTML = '<div class="loading">Loading player data...</div>';
@@ -67,8 +70,8 @@ async function fetchData() {
         }
     } catch (error) {
         console.error('Error fetching data:', error);
-        document.getElementById('players-content').innerHTML = `<div class="error">Error loading data: ${error.message}</div>`;
-        document.getElementById('data-content').innerHTML = `<div class="error">Error loading data: ${error.message}</div>`;
+        document.getElementById('players-content').innerHTML = `<div class="error">Error loading data: ${error.message}<br><small>This may be due to CORS restrictions. The API might be temporarily unavailable.</small></div>`;
+        document.getElementById('data-content').innerHTML = `<div class="error">Error loading data: ${error.message}<br><small>This may be due to CORS restrictions. The API might be temporarily unavailable.</small></div>`;
     }
 }
 
