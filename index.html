@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dwarven Realms DataApp</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Dwarven Realms DataApp by Hell Drake</h1>
+    <h2>This site presents Real-Time Data from the Dwarven Realms game</h2>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('players')">Players</button>
+    <button class="tab" onclick="switchTab('data')">Data</button>
+  </div>
+
+  <div id="players-tab" class="tab-content active">
+    <div class="search-filters">
+      <input type="text" class="search-input" id="username-search" placeholder="Search by username...">
+
+      <div class="filter-group">
+        <label>Hardcore:</label>
+        <select class="filter-select" id="hardcore-filter">
+          <option value="all">All</option>
+          <option value="true">Hardcore</option>
+          <option value="false">Non-Hardcore</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Fellowship:</label>
+        <select class="filter-select" id="fellowship-filter">
+          <option value="all">All</option>
+          <option value="true">In Fellowship</option>
+          <option value="false">No Fellowship</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Stance:</label>
+        <select class="filter-select" id="stance-filter">
+          <option value="all">All Stances</option>
+        </select>
+      </div>
+
+      <button class="reset-filters-btn" onclick="resetFilters()">Reset Filters</button>
+    </div>
+
+    <button class="refresh-btn" onclick="fetchData()">Refresh Data</button>
+
+    <div id="players-content">
+      <div class="loading">Loading player data...</div>
+    </div>
+  </div>
+
+  <div id="data-tab" class="tab-content">
+    <button class="refresh-btn" onclick="fetchData()">Refresh Data</button>
+
+    <div id="data-content">
+      <div class="loading">Loading statistics...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Back to Top Button -->
+<button id="back-to-top" class="back-to-top-btn" onclick="scrollToTop()">↑</button>
+
+<script src="script.js"></script>
+</body>
+</html>
