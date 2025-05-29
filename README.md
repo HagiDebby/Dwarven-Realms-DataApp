@@ -50,7 +50,7 @@ Dwarven-Realms-DataApp/
 ### Local Development
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/game-leaderboard.git
+   git clone https://github.com/HagiDebby/Dwarven-Realms-DataApp.git
    cd game-leaderboard
    ```
 
@@ -65,12 +65,6 @@ Dwarven-Realms-DataApp/
 
 3. Navigate to `http://localhost:8000` in your browser
 
-### GitHub Pages Deployment
-1. Fork or upload files to your GitHub repository
-2. Go to repository Settings → Pages
-3. Select "Deploy from a branch" → main branch
-4. Your site will be live at: `https://yourusername.github.io/repository-name`
-
 ## 🔧 Configuration
 
 ### API Configuration
@@ -78,16 +72,6 @@ The dashboard fetches data from:
 ```javascript
 const API_URL = 'http://loadbalancer-prod-1ac6c83-453346156.us-east-1.elb.amazonaws.com/leaderboards/scores/';
 ```
-
-To use with your own API:
-1. Update the `API_URL` in `script.js`
-2. Ensure your API returns data in the expected JSON format (see Data Format section)
-
-### CORS Considerations
-If you encounter CORS issues when hosting:
-- Add CORS headers to your API server
-- Use a CORS proxy service (temporary solution)
-- Consider creating a backend proxy
 
 ## 📊 Data Format
 
