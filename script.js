@@ -8,12 +8,13 @@ const API_URL = '/.netlify/functions/api-proxy';
 const STANCE_NAME_MAPPING = {
     'Magic': 'Magery',
     'Bow': 'Archery',
-    'Spear': 'Spear',
-    'Sword': 'Swords',
+    'Spear': 'Polearm',
+    'Sword': 'Blade',
     'Scythe': 'Scythe',
-    'Polearm': 'Maul',
-    'TwoHanded': 'Axe',
-    'Common': 'Fists'
+    'Polearm': 'Polearm',
+    'TwoHanded': 'Two-Handed',
+    'Common': 'Common'
+    // Add more mappings as needed
 };
 
 // Function to get display name for stance
@@ -297,13 +298,28 @@ function generateDataStatistics() {
 
     // Player counts
     const totalPlayers = players.length;
-    const hardcorePlayers = players.filter(p => p.isHardcore).length;
-    const hardcoreFellowshipPlayers = players.filter(p => p.isHardcore && p.tag).length;
-    const nonHardcorePlayers = players.filter(p => !p.isHardcore).length;
-    const nonHardcoreFellowshipPlayers = players.filter(p => !p.isHardcore && p.tag).length;
+    const hardcorePlayersCount = players.filter(p => p.isHardcore).length;
+    const hardcoreFellowshipPlayersCount = players.filter(p => p.isHardcore && p.tag).length;
+    const nonHardcorePlayersCount = players.filter(p => !p.isHardcore).length;
+    const nonHardcoreFellowshipPlayersCount = players.filter(p => !p.isHardcore && p.tag).length;
 
     // Total deaths
     const totalDeaths = players.reduce((sum, p) => sum + parseInt(p.deaths || 0), 0);
+
+    // Death statistics for non-hardcore players only
+    const nonHardcorePlayersForDeaths = players.filter(p => !p.isHardcore);
+    let playerWithMostDeaths = null;
+    let playerWithLeastDeaths = null;
+
+    if (nonHardcorePlayersForDeaths.length > 0) {
+        playerWithMostDeaths = nonHardcorePlayersForDeaths.reduce((max, player) =>
+            parseInt(player.deaths || 0) > parseInt(max.deaths || 0) ? player : max
+        );
+
+        playerWithLeastDeaths = nonHardcorePlayersForDeaths.reduce((min, player) =>
+            parseInt(player.deaths || 0) < parseInt(min.deaths || 0) ? player : min
+        );
+    }
 
     // Dungeon statistics
     const dungeonStats = {};
@@ -313,11 +329,48 @@ function generateDataStatistics() {
         });
     });
 
-    // Highest rupture levels
-    const hardcoreRuptures = players.filter(p => p.isHardcore).map(p => parseInt(p.raptureLevel || 0));
-    const hardcoreFellowshipRuptures = players.filter(p => p.isHardcore && p.tag).map(p => parseInt(p.raptureLevel || 0));
-    const nonHardcoreRuptures = players.filter(p => !p.isHardcore).map(p => parseInt(p.raptureLevel || 0));
-    const nonHardcoreFellowshipRuptures = players.filter(p => !p.isHardcore && p.tag).map(p => parseInt(p.raptureLevel || 0));
+    // Highest rupture levels with player names
+    const hardcorePlayersForRupture = players.filter(p => p.isHardcore);
+    const hardcoreFellowshipPlayersForRupture = players.filter(p => p.isHardcore && p.tag);
+    const nonHardcorePlayersForRupture = players.filter(p => !p.isHardcore);
+    const nonHardcoreFellowshipPlayersForRupture = players.filter(p => !p.isHardcore && p.tag);
+
+    let hardcoreRuptureRecord = { level: 0, player: null };
+    let hardcoreFellowshipRuptureRecord = { level: 0, player: null };
+    let nonHardcoreRuptureRecord = { level: 0, player: null };
+    let nonHardcoreFellowshipRuptureRecord = { level: 0, player: null };
+
+    // Find hardcore record
+    if (hardcorePlayersForRupture.length > 0) {
+        const topHardcore = hardcorePlayersForRupture.reduce((max, player) =>
+            parseInt(player.raptureLevel || 0) > parseInt(max.raptureLevel || 0) ? player : max
+        );
+        hardcoreRuptureRecord = { level: parseInt(topHardcore.raptureLevel || 0), player: topHardcore };
+    }
+
+    // Find hardcore fellowship record
+    if (hardcoreFellowshipPlayersForRupture.length > 0) {
+        const topHardcoreFellowship = hardcoreFellowshipPlayersForRupture.reduce((max, player) =>
+            parseInt(player.raptureLevel || 0) > parseInt(max.raptureLevel || 0) ? player : max
+        );
+        hardcoreFellowshipRuptureRecord = { level: parseInt(topHardcoreFellowship.raptureLevel || 0), player: topHardcoreFellowship };
+    }
+
+    // Find non-hardcore record
+    if (nonHardcorePlayersForRupture.length > 0) {
+        const topNonHardcore = nonHardcorePlayersForRupture.reduce((max, player) =>
+            parseInt(player.raptureLevel || 0) > parseInt(max.raptureLevel || 0) ? player : max
+        );
+        nonHardcoreRuptureRecord = { level: parseInt(topNonHardcore.raptureLevel || 0), player: topNonHardcore };
+    }
+
+    // Find non-hardcore fellowship record
+    if (nonHardcoreFellowshipPlayersForRupture.length > 0) {
+        const topNonHardcoreFellowship = nonHardcoreFellowshipPlayersForRupture.reduce((max, player) =>
+            parseInt(player.raptureLevel || 0) > parseInt(max.raptureLevel || 0) ? player : max
+        );
+        nonHardcoreFellowshipRuptureRecord = { level: parseInt(topNonHardcoreFellowship.raptureLevel || 0), player: topNonHardcoreFellowship };
+    }
 
     // Fellowship statistics
     const fellowshipStats = {};
@@ -359,19 +412,19 @@ function generateDataStatistics() {
                     </div>
                     <div class="stat-item">
                         <div class="stat-item-title">Hardcore</div>
-                        <div class="stat-item-value">${hardcorePlayers}</div>
+                        <div class="stat-item-value">${hardcorePlayersCount}</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-item-title">Hardcore Fellowship</div>
-                        <div class="stat-item-value">${hardcoreFellowshipPlayers}</div>
+                        <div class="stat-item-value">${hardcoreFellowshipPlayersCount}</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-item-title">Non-Hardcore</div>
-                        <div class="stat-item-value">${nonHardcorePlayers}</div>
+                        <div class="stat-item-value">${nonHardcorePlayersCount}</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-item-title">Non-Hardcore Fellowship</div>
-                        <div class="stat-item-value">${nonHardcoreFellowshipPlayers}</div>
+                        <div class="stat-item-value">${nonHardcoreFellowshipPlayersCount}</div>
                     </div>
                 </div>
             </div>
@@ -387,6 +440,18 @@ function generateDataStatistics() {
                         <div class="stat-item-title">Average per Player</div>
                         <div class="stat-item-value">${(totalDeaths / totalPlayers).toFixed(1)}</div>
                     </div>
+                    ${playerWithMostDeaths ? `
+                    <div class="stat-item">
+                        <div class="stat-item-title">Most Deaths (Non-HC)</div>
+                        <div class="stat-item-value">👑 ${extractUsername(playerWithMostDeaths.name)} (${playerWithMostDeaths.deaths})</div>
+                    </div>
+                    ` : ''}
+                    ${playerWithLeastDeaths ? `
+                    <div class="stat-item">
+                        <div class="stat-item-title">Least Deaths (Non-HC)</div>
+                        <div class="stat-item-value">👑 ${extractUsername(playerWithLeastDeaths.name)} (${playerWithLeastDeaths.deaths})</div>
+                    </div>
+                    ` : ''}
                 </div>
             </div>
             
@@ -395,19 +460,31 @@ function generateDataStatistics() {
                 <div class="stat-items-grid">
                     <div class="stat-item">
                         <div class="stat-item-title">Hardcore</div>
-                        <div class="stat-item-value">${Math.max(...hardcoreRuptures, 0)}</div>
+                        <div class="stat-item-value">
+                            ${hardcoreRuptureRecord.level}
+                            ${hardcoreRuptureRecord.player ? `<br><small>${extractUsername(hardcoreRuptureRecord.player.name)}</small>` : ''}
+                        </div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-item-title">Hardcore Fellowship</div>
-                        <div class="stat-item-value">${Math.max(...hardcoreFellowshipRuptures, 0)}</div>
+                        <div class="stat-item-value">
+                            ${hardcoreFellowshipRuptureRecord.level}
+                            ${hardcoreFellowshipRuptureRecord.player ? `<br><small>${extractUsername(hardcoreFellowshipRuptureRecord.player.name)}</small>` : ''}
+                        </div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-item-title">Non-Hardcore</div>
-                        <div class="stat-item-value">${Math.max(...nonHardcoreRuptures, 0)}</div>
+                        <div class="stat-item-value">
+                            ${nonHardcoreRuptureRecord.level}
+                            ${nonHardcoreRuptureRecord.player ? `<br><small>${extractUsername(nonHardcoreRuptureRecord.player.name)}</small>` : ''}
+                        </div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-item-title">Non-Hardcore Fellowship</div>
-                        <div class="stat-item-value">${Math.max(...nonHardcoreFellowshipRuptures, 0)}</div>
+                        <div class="stat-item-value">
+                            ${nonHardcoreFellowshipRuptureRecord.level}
+                            ${nonHardcoreFellowshipRuptureRecord.player ? `<br><small>${extractUsername(nonHardcoreFellowshipRuptureRecord.player.name)}</small>` : ''}
+                        </div>
                     </div>
                 </div>
             </div>
