@@ -1,6 +1,6 @@
-# Dwarven Realms Leaderboard & Real-Time Data Dashboard
+# Game Leaderboard Dashboard
 
-A real-time web dashboard for viewing and analyzing Dwarven Realms player statistics, built with vanilla HTML, CSS, and JavaScript.
+A real-time web dashboard for viewing and analyzing game player statistics, built with vanilla HTML, CSS, and JavaScript.
 
 ## 🎮 Features
 
@@ -8,21 +8,21 @@ A real-time web dashboard for viewing and analyzing Dwarven Realms player statis
 - **Real-time player data** from live game API
 - **Advanced filtering** by username, hardcore mode, fellowship status, and stance
 - **Detailed player profiles** with expandable information including:
-    - Primary/Secondary attacks with formatted names
-    - Complete equipment modifications
-    - Dungeon completion statistics
-    - Player stats (deaths, hardcore status, fellowship, current zone, online status)
+  - Primary/Secondary attacks with formatted names
+  - Complete equipment modifications
+  - Dungeon completion statistics
+  - Player stats (deaths, hardcore status, fellowship, current zone, online status)
 - **Search functionality** for quick player lookup
 - **Reset filters** button to clear all filters instantly
 
 ### Data Tab
 - **Comprehensive statistics** presented in clean card layouts:
-    - Player distribution (hardcore vs non-hardcore, fellowship members)
-    - Death statistics and averages
-    - Highest rupture levels by player category
-    - Stance usage analytics with percentages
-    - Dungeon completion leaderboards
-    - Fellowship information and member counts
+  - Player distribution (hardcore vs non-hardcore, fellowship members)
+  - Death statistics and averages
+  - Highest rupture levels by player category
+  - Stance usage analytics with percentages
+  - Dungeon completion leaderboards
+  - Fellowship information and member counts
 
 ### UI/UX Features
 - **Dark theme** with light blue accents
@@ -33,37 +33,29 @@ A real-time web dashboard for viewing and analyzing Dwarven Realms player statis
 
 ## 🚀 Live Demo
 
-[View Live Dashboard](https://HagiDebby.github.io/Dwarven-Realms-DataApp)
+[View Live Dashboard](https://yourusername.github.io/game-leaderboard)
 
 ## 📁 Project Structure
 
 ```
-Dwarven-Realms-DataApp/
-├── index.html          # Main HTML structure
-├── styles.css          # All styling and responsive design
-├── script.js           # JavaScript functionality and API calls
-└── README.md          # This file
+game-leaderboard/
+├── index.html
+├── styles.css
+├── package.json
+├── netlify/
+│   └── functions/
+│       └── api-proxy.js
+├── js/                     # ← New modular structure
+│   ├── main.js
+│   ├── config.js
+│   ├── api.js
+│   ├── utils.js
+│   ├── filters.js
+│   ├── players.js
+│   ├── statistics.js
+│   └── ui.js
+└── README.md
 ```
-
-## 🛠️ Installation & Setup
-
-### Local Development
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/HagiDebby/Dwarven-Realms-DataApp.git
-   cd game-leaderboard
-   ```
-
-2. Open `index.html` in your web browser or use a local server:
-   ```bash
-   # Using Python 3
-   python -m http.server 8000
-   
-   # Using Node.js (if you have http-server installed)
-   npx http-server
-   ```
-
-3. Navigate to `http://localhost:8000` in your browser
 
 ## 🔧 Configuration
 
@@ -72,6 +64,13 @@ The dashboard fetches data from:
 ```javascript
 const API_URL = 'http://loadbalancer-prod-1ac6c83-453346156.us-east-1.elb.amazonaws.com/leaderboards/scores/';
 ```
+
+
+### CORS Considerations
+If you encounter CORS issues when hosting:
+- Add CORS headers to your API server
+- Use a CORS proxy service (temporary solution)
+- Consider creating a backend proxy
 
 ## 📊 Data Format
 
@@ -158,12 +157,8 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 🔮 Future Enhancements
 
-- [ ] Add data export functionality (CSV/JSON)
 - [ ] Implement player comparison features
-- [ ] Add historical data tracking
-- [ ] Create admin panel for data management
 - [ ] Add more visualization charts
-- [ ] Implement real-time updates with WebSocket
 - [ ] Add player profile pages
 - [ ] Create mobile app version
 
