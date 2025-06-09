@@ -195,13 +195,13 @@ export class StatisticsRenderer {
                     </div>
                     ${stats.playerWithMostDeaths ? `
                     <div class="stat-item">
-                        <div class="stat-item-title">Most Deaths (Non-HC)</div>
+                        <div class="stat-item-title">Most Deaths</div>
                         <div class="stat-item-value">👑 ${extractUsername(stats.playerWithMostDeaths.name)} (${stats.playerWithMostDeaths.deaths})</div>
                     </div>
                     ` : ''}
                     ${stats.playerWithLeastDeaths ? `
                     <div class="stat-item">
-                        <div class="stat-item-title">Least Deaths (Non-HC)</div>
+                        <div class="stat-item-title">Least Deaths</div>
                         <div class="stat-item-value">👑 ${extractUsername(stats.playerWithLeastDeaths.name)} (${stats.playerWithLeastDeaths.deaths})</div>
                     </div>
                     ` : ''}
