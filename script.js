@@ -4,6 +4,23 @@ let filteredPlayers = [];
 // API URL - points to Netlify function
 const API_URL = '/.netlify/functions/api-proxy';
 
+// Stance name mapping from API to in-game names
+const STANCE_NAME_MAPPING = {
+    'Magic': 'Magery',
+    'Bow': 'Archery',
+    'Spear': 'Spear',
+    'Sword': 'Swords',
+    'Scythe': 'Scythe',
+    'Polearm': 'Maul',
+    'TwoHanded': 'Axe',
+    'Common': 'Fists'
+};
+
+// Function to get display name for stance
+function getStanceDisplayName(apiStanceName) {
+    return STANCE_NAME_MAPPING[apiStanceName] || apiStanceName;
+}
+
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
     fetchData();
@@ -81,8 +98,8 @@ function populateStanceFilter() {
 
     stances.forEach(stance => {
         const option = document.createElement('option');
-        option.value = stance;
-        option.textContent = stance;
+        option.value = stance; // Keep API value for filtering
+        option.textContent = getStanceDisplayName(stance); // Show display name
         stanceFilter.appendChild(option);
     });
 }
@@ -148,7 +165,7 @@ function formatAttackName(attackString) {
     // Add spaces before capital letters in the attack name
     const formattedAttack = attackName.replace(/([A-Z])/g, ' $1').trim();
 
-    return `${stance} - ${formattedAttack}`;
+    return `${getStanceDisplayName(stance)} - ${formattedAttack}`;
 }
 
 function renderPlayersTable() {
@@ -181,7 +198,7 @@ function renderPlayersTable() {
                 <td>${extractInGameName(player.name)}</td>
                 <td>${player.level}</td>
                 <td>${player.raptureLevel}</td>
-                <td>${player.build?.stance || 'N/A'}</td>
+                <td>${getStanceDisplayName(player.build?.stance) || 'N/A'}</td>
                 <td><button class="btn" onclick="toggleExpandedContent(${index})">Show More</button></td>
             </tr>
             <tr id="expanded-${index}" class="expanded-content">
@@ -400,7 +417,7 @@ function generateDataStatistics() {
                 <div class="stance-stats-grid">
                     ${Object.entries(stanceStats).sort(([,a], [,b]) => b - a).map(([stance, count]) =>
         `<div class="stat-item">
-                            <div class="stat-item-title">${stance}</div>
+                            <div class="stat-item-title">${getStanceDisplayName(stance)}</div>
                             <div class="stat-item-value">${count} (${((count / totalPlayers) * 100).toFixed(1)}%)</div>
                         </div>`
     ).join('')}
