@@ -8,13 +8,12 @@ const API_URL = '/.netlify/functions/api-proxy';
 const STANCE_NAME_MAPPING = {
     'Magic': 'Magery',
     'Bow': 'Archery',
-    'Spear': 'Polearm',
-    'Sword': 'Blade',
+    'Spear': 'Spear',
+    'Sword': 'Sword',
     'Scythe': 'Scythe',
-    'Polearm': 'Polearm',
-    'TwoHanded': 'Two-Handed',
-    'Common': 'Common'
-    // Add more mappings as needed
+    'Polearm': 'Maul',
+    'TwoHanded': 'Axe',
+    'Common': 'Fists'
 };
 
 // Function to get display name for stance
